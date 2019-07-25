@@ -8,9 +8,10 @@ using System.Threading.Tasks;
 namespace SingelTon
 {
     [Serializable]
-    class SingleTonClass :ISerializable
+    class SingleTonClass : ISerializable
     {
         private static SingleTonClass _instance;
+        private static readonly object _lock = new object();
 
         public string Name = "SingleTon";
 
@@ -19,10 +20,16 @@ namespace SingelTon
             get
             {
                 if (_instance == null)
-                    _instance = new SingleTonClass();
+                {
+                    if (_lock == null)
+                    {
+                        if (_instance == null)
+                            _instance = new SingleTonClass();
+                    }
+                }
 
                 return _instance;
-            }            
+            }
         }
 
         void ISerializable.GetObjectData(
