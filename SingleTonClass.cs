@@ -13,7 +13,7 @@ namespace SingelTon
         private static SingleTonClass _instance;
         private static readonly object _lock = new object();
 
-        public string Name = "SingleTon";
+        public string Name = "SingleTon".GetHashCode().ToString();
 
         internal static SingleTonClass Instance
         {
@@ -21,7 +21,7 @@ namespace SingelTon
             {
                 if (_instance == null)
                 {
-                    if (_lock == null)
+                    lock(_lock)
                     {
                         if (_instance == null)
                             _instance = new SingleTonClass();
@@ -48,7 +48,7 @@ namespace SingelTon
         // This object has no fields (although it could).
 
         // GetRealObject is called after this object is deserialized.
-        public Object GetRealObject(StreamingContext context)
+        public object GetRealObject(StreamingContext context)
         {
             // When deserialiing this object, return a reference to 
             // the Singleton object instead.
